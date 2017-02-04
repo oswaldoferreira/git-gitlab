@@ -32,6 +32,13 @@ func (this *GlobalGitConfig) Host() (string, error) {
 	return host, e
 }
 
+func (this *GlobalGitConfig) Project() (string, error) {
+	path, e := git.ConfigFindGlobal()
+	global, e := git.OpenOndisk(nil, path)
+	host, e := global.LookupString("gitlab.project")
+	return host, e
+}
+
 func (this *GlobalGitConfig) Token() (string, error) {
 	path, e := git.ConfigFindGlobal()
 	global, e := git.OpenOndisk(nil, path)

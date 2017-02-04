@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"os/exec"
 
 	"github.com/codegangsta/cli"
 	"fmt"
@@ -89,6 +90,29 @@ func do_merge(c *cli.Context) {
 }
 
 func do_show(c *cli.Context) {
+  issuablePath := c.Args().Get(0)
+
+  config, e := NewLocalGitConfig()
+  if e != nil {
+    fmt.Println(e.Error())
+    return
+  }
+
+  projectPath, e := config.Project()
+  if e != nil {
+    fmt.Println(e.Error())
+    return
+  }
+
+  hostPath, e := config.Host()
+  if e != nil {
+    fmt.Println(e.Error())
+    return
+  }
+
+  completePath := (hostPath + "/" + projectPath + "/" + issuablePath)
+  fmt.Println("Opening " + completePath)
+  exec.Command("open", completePath).Output()
 }
 
 
