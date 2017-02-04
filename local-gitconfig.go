@@ -30,6 +30,10 @@ func (this *LocalGitConfig) Token() (string, error) {
 	return this.Config.LookupString("gitlab.token")
 }
 
+func (this *LocalGitConfig) Project() (string, error) {
+	return this.Config.LookupString("gitlab.project")
+}
+
 func (this *LocalGitConfig) ApiPath() (string, error) {
 	apiPath := fmt.Sprintf("/api/v3")
 	return apiPath, nil
