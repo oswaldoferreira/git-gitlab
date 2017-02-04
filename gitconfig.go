@@ -1,9 +1,8 @@
 package main
 
-
-type GitConfig interface  {
-    Host() (string, error)
-    ApiPath() (string, error)
-    Token() (string, error)
-    Project() (string, error)
+type GitConfig interface {
+	Host() (string, error)
+	ApiPath() (string, error)
+	Token() (string, error)
+	Project() (string, error)
 }

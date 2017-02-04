@@ -5,18 +5,16 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/codegangsta/cli"
 	"fmt"
+	"github.com/codegangsta/cli"
 )
 
 var Commands = []cli.Command{
 	command_clone,
-    command_merge_request,
-    command_merge,
-    command_show,
-    
+	command_merge_request,
+	command_merge,
+	command_show,
 }
-
 
 var command_clone = cli.Command{
 	Name:  "clone",
@@ -50,7 +48,6 @@ var command_show = cli.Command{
 	Action: do_show,
 }
 
-
 func debug(v ...interface{}) {
 	if os.Getenv("DEBUG") != "" {
 		log.Println(v...)
@@ -62,7 +59,6 @@ func assert(err error) {
 		log.Fatal(err)
 	}
 }
-
 
 func do_clone(c *cli.Context) {
 	remote := c.Args().Get(0)
@@ -90,29 +86,27 @@ func do_merge(c *cli.Context) {
 }
 
 func do_show(c *cli.Context) {
-  issuablePath := c.Args().Get(0)
+	issuablePath := c.Args().Get(0)
 
-  config, e := NewLocalGitConfig()
-  if e != nil {
-    fmt.Println(e.Error())
-    return
-  }
+	config, e := NewLocalGitConfig()
+	if e != nil {
+		fmt.Println(e.Error())
+		return
+	}
 
-  projectPath, e := config.Project()
-  if e != nil {
-    fmt.Println(e.Error())
-    return
-  }
+	projectPath, e := config.Project()
+	if e != nil {
+		fmt.Println(e.Error())
+		return
+	}
 
-  hostPath, e := config.Host()
-  if e != nil {
-    fmt.Println(e.Error())
-    return
-  }
+	hostPath, e := config.Host()
+	if e != nil {
+		fmt.Println(e.Error())
+		return
+	}
 
-  completePath := (hostPath + "/" + projectPath + "/" + issuablePath)
-  fmt.Println("Opening " + completePath)
-  exec.Command("open", completePath).Output()
+	completePath := (hostPath + "/" + projectPath + "/" + issuablePath)
+	fmt.Println("Opening " + completePath)
+	exec.Command("open", completePath).Output()
 }
-
-
