@@ -107,6 +107,6 @@ $ git lab merge [MERGE_REQUEST_ID]
 ### git show
 
 ~~~sh
-$ git lab show -- issue/10
-> open http://gitlab.example.com/NAMESPACE/PROJECT/issues/10
+$ git lab show issues/[ISSUE_ID]
+$ git lab show merge_requests/[MERGE_REQUEST_ID]
 ~~~
