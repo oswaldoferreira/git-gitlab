@@ -106,7 +106,9 @@ func do_show(c *cli.Context) {
 		return
 	}
 
-	completePath := (hostPath + "/" + projectPath + "/" + issuablePath)
-	fmt.Println("Opening " + completePath)
-	exec.Command("open", completePath).Output()
+	if issuablePath != "" {
+		exec.Command("open", hostPath+"/"+projectPath+"/"+issuablePath).Output()
+	} else {
+		exec.Command("open", hostPath+"/"+projectPath).Output()
+	}
 }
