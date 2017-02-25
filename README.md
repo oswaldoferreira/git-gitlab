@@ -109,4 +109,10 @@ $ git lab merge [MERGE_REQUEST_ID]
 ~~~sh
 $ git lab show issues/[ISSUE_ID]
 $ git lab show merge_requests/[MERGE_REQUEST_ID]
+
+$ git lab show -d issues 
+> Opens issues dashboard
+
+$ git lab show -d merge_requests 
+> Opens issues dashboard
 ~~~
