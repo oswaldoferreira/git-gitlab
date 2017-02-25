@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 
 	"fmt"
 	"github.com/codegangsta/cli"
@@ -46,6 +47,13 @@ var command_show = cli.Command{
 	Description: `
 `,
 	Action: do_show,
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "dashboard, d",
+			Value: "",
+			Usage: "Opens Issues or Merge Requests dashboard",
+		},
+	},
 }
 
 func debug(v ...interface{}) {
@@ -105,10 +113,25 @@ func do_show(c *cli.Context) {
 		fmt.Println(e.Error())
 		return
 	}
+	client, e := NewGitLabClient(config)
+	if e != nil {
+		fmt.Println(e.Error())
+		return
+	}
+
+	dashboardFlag := c.String("d")
 
 	if issuablePath != "" {
 		exec.Command("open", hostPath+"/"+projectPath+"/"+issuablePath).Output()
-	} else {
-		exec.Command("open", hostPath+"/"+projectPath).Output()
+	} else if dashboardFlag != "" {
+		fmt.Println("Fetching user information..")
+
+		userId, e := client.CurrentUser()
+		if e != nil {
+			fmt.Println(e.Error())
+			return
+		}
+
+		exec.Command("open", hostPath+"/dashboard/"+dashboardFlag+"?assignee_id="+strconv.Itoa(userId)).Output()
 	}
 }

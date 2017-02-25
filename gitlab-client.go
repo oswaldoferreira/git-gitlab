@@ -59,3 +59,12 @@ func (this *GitLabClient) clone(remote string, path string) (string, error) {
 	res := string(repo)
 	return res, e
 }
+
+func (this *GitLabClient) CurrentUser() (int, error) {
+	user, e := this.GitLab.CurrentUser()
+	if e != nil {
+		return 0, e
+	}
+
+	return user.Id, e
+}
