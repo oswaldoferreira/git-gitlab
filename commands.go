@@ -1,13 +1,10 @@
 package main
 
 import (
-	"log"
-	"os"
-	"os/exec"
-	"strconv"
-
 	"fmt"
 	"github.com/codegangsta/cli"
+	"log"
+	"os"
 )
 
 var Commands = []cli.Command{
@@ -102,17 +99,6 @@ func do_show(c *cli.Context) {
 		return
 	}
 
-	projectPath, e := config.Project()
-	if e != nil {
-		fmt.Println(e.Error())
-		return
-	}
-
-	hostPath, e := config.Host()
-	if e != nil {
-		fmt.Println(e.Error())
-		return
-	}
 	client, e := NewGitLabClient(config)
 	if e != nil {
 		fmt.Println(e.Error())
@@ -120,18 +106,5 @@ func do_show(c *cli.Context) {
 	}
 
 	dashboardFlag := c.String("d")
-
-	if issuablePath != "" {
-		exec.Command("open", hostPath+"/"+projectPath+"/"+issuablePath).Output()
-	} else if dashboardFlag != "" {
-		fmt.Println("Fetching user information..")
-
-		userId, e := client.CurrentUser()
-		if e != nil {
-			fmt.Println(e.Error())
-			return
-		}
-
-		exec.Command("open", hostPath+"/dashboard/"+dashboardFlag+"?assignee_id="+strconv.Itoa(userId)).Output()
-	}
+	client.show(config, dashboardFlag, issuablePath)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/plouc/go-gitlab-client"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -60,11 +61,27 @@ func (this *GitLabClient) clone(remote string, path string) (string, error) {
 	return res, e
 }
 
-func (this *GitLabClient) CurrentUser() (int, error) {
-	user, e := this.GitLab.CurrentUser()
-	if e != nil {
-		return 0, e
+func (this *GitLabClient) show(config GitConfig, dashboardFlag string, issuablePath string) {
+	projectPath, err := config.Project()
+	if err != nil {
+		fmt.Println(err.Error())
 	}
 
-	return user.Id, e
+	hostPath, err := config.Host()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if issuablePath != "" {
+		exec.Command("open", hostPath+"/"+projectPath+"/"+issuablePath).Output()
+	} else if dashboardFlag != "" {
+		fmt.Println("Fetching user information..")
+
+		user, err := this.GitLab.CurrentUser()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		exec.Command("open", hostPath+"/dashboard/"+dashboardFlag+"?assignee_id="+strconv.Itoa(user.Id)).Output()
+	}
 }
